@@ -1,19 +1,25 @@
 import os
 from dotenv import load_dotenv
-from order.order import get_order_list, get_total_amount_order, create_params , create_time
-
+from database.db import create_database
+from order.order_process import get_all_orders
+from services.services_db import get_total_amount_by_time
 load_dotenv()
 
-BASE_URL = os.getenv('DEV')
 
-def total_amount_order_in_time_range(start_time, end_time):
-    order_status_list = ['SHIPPED','COMPLETED']
-    time_list = create_time(start_time, end_time)
-    params_list = create_params(time_list)
-    total_amount_in_month = 0
-    for order_status in order_status_list:
-        order_sn_list = get_order_list(BASE_URL, params_list, order_status)
-        total_amount_order = get_total_amount_order(BASE_URL, order_sn_list)
-        total_amount_in_month += total_amount_order
-    return total_amount_in_month
+def main():
+    # create_database()
+    # env_url = os.getenv("DEV")
+    # partner_id = os.getenv("PARTNER_ID")
+    # partner_key = os.getenv("PARTNER_KEY")
+    # access_token = os.getenv("ACCESS_TOKEN")
+    # shop_id = os.getenv("SHOP_ID")
+    #
+    # get_all_orders(env_url, partner_id, partner_key, access_token, shop_id, time_from, time_to, order_status)
+    order_status = "COMPLETED"
+    time_from = "1/12/2024"
+    time_to = "1/1/2025"
+    print(f'Tổng tiền bán đc từ {time_from} đến {time_to} : {get_total_amount_by_time(order_status, time_from, time_to)} VND')
 
+
+if __name__ == "__main__":
+    main()

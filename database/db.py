@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 Base = declarative_base()
 
-DATABASE_URL = "sqlite:///./shopee_database.db"
+DATABASE_URL = "sqlite:///shopee_database.sqlite"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
@@ -14,9 +14,7 @@ def create_database():
     from .models import OrderData
     Base.metadata.create_all(bind=engine)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+
+def get_session():
+    return SessionLocal()
+
